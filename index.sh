@@ -8,8 +8,8 @@ BUILD_DIR="$(mktemp -d)"
 
 EMSDK_MANIFEST="$(curl https://raw.githubusercontent.com/emscripten-core/emsdk/master/emscripten-releases-tags.txt)"
 
-EMSCRIPTEN_TAG="${EMSCRIPTEN_TAG:-$(jq -r .latest <<< "$EMSDK_MANIFEST")}"
-RELEASE_TAG="${RELEASE_TAG:-$EMSCRIPTEN_TAG}"
+EMSCRIPTEN_TAG="${EMBIN_EMSCRIPTEN_TAG:-$(jq -r .latest <<< "$EMSDK_MANIFEST")}"
+RELEASE_TAG="${EMBIN_RELEASE_TAG:-$EMSCRIPTEN_TAG}"
 
 PREBUILD_TAG="$(jq -r ".releases[\"$EMSCRIPTEN_TAG\"]" <<< "$EMSDK_MANIFEST")"
 
