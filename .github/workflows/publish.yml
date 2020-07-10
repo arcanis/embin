@@ -25,4 +25,6 @@ jobs:
     - name: Build and publish
       run: bash index.sh
       env:
-        YARN_NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}} 
+        YARN_NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+        EMBIN_EMSCRIPTEN_TAG: ${{github.event.inputs.emscriptenTag}} 
+        EMBIN_RELEASE_TAG: ${{github.event.inputs.releaseTag}} 
