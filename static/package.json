@@ -1,0 +1,8 @@
+{
+    "name": "embin-<something>",
+    "version": "<something>",
+    "license": "MIT",
+    "bin": {
+	"embin": "./embin.js"
+    }
+}
