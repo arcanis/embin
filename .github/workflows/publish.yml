@@ -25,4 +25,4 @@ jobs:
     - name: Build and publish
       run: bash index.sh
       env:
-        NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}} 
+        YARN_NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}} 
