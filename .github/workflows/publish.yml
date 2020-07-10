@@ -4,6 +4,13 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
+    inputs:
+      releaseTag:
+        required: true
+        description: "Release tag"
+      emscriptenTag:
+        required: true
+        description: "Emscripten tag"
 
 jobs:
   build:
@@ -11,6 +18,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
+    - name: Install packages
+      run: sudo apt-get install moreutils
 
-    - name: Run a one-line script
+    - name: Build and publish
       run: bash index.sh
