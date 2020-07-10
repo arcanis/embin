@@ -35,4 +35,5 @@ rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
 jq ". + {\"name\": \"embin-$PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
 
 # Publish time!
+yarn
 yarn npm publish --tolerate-republish
