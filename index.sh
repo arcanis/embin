@@ -6,8 +6,10 @@ set -x
 THIS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 BUILD_DIR="$(mktemp -d)"
 
-EMSCRIPTEN_TAG=1.39.19
-RELEASE_TAG=665121d026cafc46c29b30d6d4c45ed73eedbb7e
+EMSDK_MANIFEST="$(curl https://raw.githubusercontent.com/emscripten-core/emsdk/master/emscripten-releases-tags.txt)"
+
+EMSCRIPTEN_TAG="$(jq -r .latest <<< "$EMSDK_MANIFEST")"
+RELEASE_TAG="$(jq -r ".releases[\"$EMSCRIPTEN_TAG\"]" <<< "$EMSDK_MANIFEST")"
 
 PLATFORM=linux
 
@@ -31,4 +33,4 @@ rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
 jq ". + {\"name\": \"embin-$PLATFORM\", \"version\": \"$EMSCRIPTEN_TAG\"}" package.json | sponge package.json
 
 # Publish time!
-yarn npm publish
+yarn npm publish --tolerate-republish
