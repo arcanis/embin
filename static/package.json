@@ -4,5 +4,21 @@
     "license": "MIT",
     "bin": {
 	"embin": "./embin.js"
+    },
+    "peerDependencies": {
+	"embin-darwin": "<something>",
+	"embin-linux": "<something>",
+	"embin-win32": "<something>"
+    },
+    "peerDependenciesMeta": {
+	"embin-darwin": {
+	    "optional": true
+	},
+	"embin-linux": {
+	    "optional": true
+	},
+	"embin-win32": {
+	    "optional": true
+	}
     }
 }

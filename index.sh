@@ -13,12 +13,25 @@ RELEASE_TAG="${EMBIN_RELEASE_TAG:-$EMSCRIPTEN_TAG}"
 
 PREBUILD_TAG="$(jq -r ".releases[\"$EMSCRIPTEN_TAG\"]" <<< "$EMSDK_MANIFEST")"
 
-PLATFORM=linux
+error() {
+    echo "$1"
+    exit 1
+}
+
+case $EMBIN_PLATFORM in
+    linux) EMSCRIPTEN_PLATFORM=linux;;
+    darwin) EMSCRIPTEN_PLATFORM=mac;;
+    win32) EMSCRIPTEN_PLATFORM=win;;
+    *) error "Invalid platform ${EMBIN_PLATFORM}";;
+esac
 
 # Create the basic repository
 mkdir -p "$BUILD_DIR"
 cd "$BUILD_DIR"
 yarn init -2
+
+# Currently required because `executableFiles` is only in master
+yarn set version from sources
 
 # Install the release
 wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.tbz2
@@ -26,6 +39,7 @@ tar xf wasm-binaries.tbz2
 
 # Remove various useless items
 rm -rf install/emscripten/{tests,docs,site,media,.github,.circleci}
+rm -rf install/fastcomp
 rm -f wasm-binaries.tbz2
 
 # Copy the files
@@ -33,6 +47,10 @@ rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
 
 # Inject the variables
 jq ". + {\"name\": \"embin-$PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
+
+# Get the list of executable files and add them to publishConfig.executableFiles
+EXECUTABLES=$(find . -type f -executable | jq -R -s -c 'split("\n")[:-1]')
+jq ". * {\"publishConfig\": {\"executableFiles\": \$executableFiles}}" package.json --argjson executableFiles "${EXECUTABLES}" | sponge package.json
 
 # Publish time!
 yarn

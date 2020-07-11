@@ -16,14 +16,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        platform: [linux, darwin, win32]
+
     steps:
     - uses: actions/checkout@v2
-    
+
+    # Needed for 'sponge'
     - name: Install packages
       run: sudo apt-get install moreutils
 
-    - name: Build and publish
-      run: bash index.sh
+    - name: Build and publish (${{matrix.platform}})
+      run:
+        EMBIN_PLATFORM=${{matrix.platform}} bash index.sh
       env:
         YARN_NPM_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
         EMBIN_EMSCRIPTEN_TAG: ${{github.event.inputs.emscriptenTag}} 
