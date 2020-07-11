@@ -8,4 +8,4 @@ yarn add embin-linux
 
 ## Usage
 
-Once the dependency is added, just use `yarn embin-linux emcc` to run the Emscripten compiler.
+Once the dependency is added, just use `yarn embin emcc` to run the Emscripten compiler.
