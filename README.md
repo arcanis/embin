@@ -17,5 +17,5 @@ Once the dependency is added, just use `yarn embin emcc` to run the Emscripten c
 You can also use [`yarn dlx`](https://yarnpkg.com/cli/dlx), but note that the run may be slow from time to time as Yarn will periodically fetch the new embin releases, which can be pretty heavy:
 
 ```
-yarn dlx embin emcc -h
+yarn dlx -p embin-linux embin emcc -h
 ```
