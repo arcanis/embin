@@ -6,8 +6,6 @@ const path = require(`path`);
 
 const manifest = require(`./package.json`);
 
-main();
-
 const richFormat = process.stdout.isTTY ? {
     error: str => `\x1b[31m\x1b[1m${str}\x1b[22m\x1b[39m`,
     code: str => `\x1b[36m${str}\x1b[39m`,
@@ -15,6 +13,8 @@ const richFormat = process.stdout.isTTY ? {
     error: str => str,
     code: str => str,
 };;
+
+main();
 
 function error(name, message) {
     console.log(`${richFormat.error(name)}: ${message}`);
@@ -47,7 +47,7 @@ function main() {
 
     sub.on(`error`, err => {
 	if (err.code === `ENOENT`) {
-	    error(`Command not found`, `did you mean to call ${richFormat.code(`yarn embin emcc ${process.argv.slice(2).join(' ')}`)}`);
+	    error(`Command not found`, `did you mean to call ${richFormat.code(`yarn embin emcc ${process.argv.slice(2).join(' ')}`)}?`);
 	} else {
 	    errorStack(err.stack);
 	}
