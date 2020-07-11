@@ -6,6 +6,8 @@ This repository contains the prebuilt Emscripten releases repackaged for the npm
 yarn add embin-linux
 ```
 
+**Note:** This package requires to use Yarn 2.2+ or npm. Prior releases are known to have some issues with how symlinks are stored.
+
 ## Usage
 
 Once the dependency is added, just use `yarn embin emcc` to run the Emscripten compiler.
