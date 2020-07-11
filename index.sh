@@ -55,7 +55,13 @@ rm -f wasm-binaries.*
 rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
 
 # Inject the variables
-jq ". + {\"name\": \"embin-$EMBIN_PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
+jq ". * {\"name\": \"embin-$EMBIN_PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
+
+# Copy the dependencies from emscripten itself
+DEPENDENCIES=$(jq .dependencies install/emscripten/package.json)
+jq ". * {\"dependencies\": \$dependencies}" package.json --argjson dependencies "$DEPENDENCIES" | sponge package.json
+
+# Makes sure that the package lists peer dependencies for the other optional platforms
 jq ".peerDependencies[] = \"$RELEASE_TAG\"" package.json | sponge package.json
 
 # Get the list of executable files and add them to publishConfig.executableFiles

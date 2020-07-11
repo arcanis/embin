@@ -5,6 +5,7 @@
     "bin": {
 	"embin": "./embin.js"
     },
+    "dependencies": {},
     "peerDependencies": {
 	"embin-darwin": "<something>",
 	"embin-linux": "<something>",
