@@ -34,8 +34,13 @@ yarn init -2
 yarn set version from sources
 
 # Install the release
-wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$EMSCRIPTEN_PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.tbz2
-tar xf wasm-binaries.tbz2
+if [[ $EMSCRIPTEN_PLATFORM == "win" ]]; then
+    wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$EMSCRIPTEN_PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.zip
+    unzip wasm-binaries.zip
+else
+    wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$EMSCRIPTEN_PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.tbz2
+    tar xf wasm-binaries.tbz2
+fi
 
 # Remove various useless items
 rm -rf install/**/__pycache__
@@ -44,7 +49,7 @@ rm -rf install/emscripten/third_party/uglify-js/test
 rm -rf install/emscripten/third_party/ply/{test,example,doc}
 rm -rf install/emscripten/system/lib/libunwind/docs
 rm -rf install/fastcomp
-rm -f wasm-binaries.tbz2
+rm -f wasm-binaries.*
 
 # Copy the files
 rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
