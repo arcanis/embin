@@ -34,11 +34,15 @@ yarn init -2
 yarn set version from sources
 
 # Install the release
-wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.tbz2
+wget -q https://storage.googleapis.com/webassembly/emscripten-releases-builds/"$EMSCRIPTEN_PLATFORM"/"$PREBUILD_TAG"/wasm-binaries.tbz2
 tar xf wasm-binaries.tbz2
 
 # Remove various useless items
+rm -rf install/**/__pycache__
 rm -rf install/emscripten/{tests,docs,site,media,.github,.circleci}
+rm -rf install/emscripten/third_party/uglify-js/test
+rm -rf install/emscripten/third_party/ply/{test,example,doc}
+rm -rf install/emscripten/system/lib/libunwind/docs
 rm -rf install/fastcomp
 rm -f wasm-binaries.tbz2
 
@@ -46,7 +50,8 @@ rm -f wasm-binaries.tbz2
 rsync -azh "$THIS_DIR"/static/ "$BUILD_DIR"
 
 # Inject the variables
-jq ". + {\"name\": \"embin-$PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
+jq ". + {\"name\": \"embin-$EMBIN_PLATFORM\", \"version\": \"$RELEASE_TAG\"}" package.json | sponge package.json
+jq ".peerDependencies[] = \"$RELEASE_TAG\"" package.json | sponge package.json
 
 # Get the list of executable files and add them to publishConfig.executableFiles
 EXECUTABLES=$(find . -type f -executable | jq -R -s -c 'split("\n")[:-1]')
