@@ -1,6 +1,6 @@
 # embin
 
-This repository contains the prebuilt Emscripten releases repackaged for the npm registry. It makes it possible to list them as dependencies in your application:
+This repository contains the prebuilt Emscripten releases repackaged for the npm registry (releases are automated and done daily, so even if this repo doesn't get content update it should still stay relevant). It makes it possible to list them as dependencies in your application:
 
 ```
 yarn add embin-linux
