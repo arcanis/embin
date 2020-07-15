@@ -2,6 +2,7 @@
     "name": "embin-<something>",
     "version": "<something>",
     "license": "MIT",
+    "preferUnplugged": true,
     "bin": {
 	"embin": "./embin.js"
     },
